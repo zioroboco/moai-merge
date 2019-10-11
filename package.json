@@ -1,0 +1,13 @@
+{
+  "name": "moai-merge",
+  "version": "0.0.0-dev",
+  "description": "An opinionated squash-based workflow for conventional PRs.",
+  "author": "Louis Quinnell <zioroboco@gmail.com>",
+  "license": "ISC",
+  "repository": "https://github.com/zioroboco/moai-merge.git",
+  "homepage": "https://github.com/zioroboco/moai-merge",
+  "bugs": "https://github.com/zioroboco/moai-merge/issues",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
