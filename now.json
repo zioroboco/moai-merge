@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [{ "src": "now.js", "use": "@now/node" }],
+  "routes": [{ "src": "/", "dest": "now.js" }],
+  "env": {
+    "APP_ID": "@moai-app-id",
+    "WEBHOOK_SECRET": "@moai-webhook-secret",
+    "PRIVATE_KEY": "@moai-private-key"
+  }
+}
