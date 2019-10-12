@@ -6,4 +6,5 @@
   <p>
     An opinionated squash-based workflow for conventional PRs.
   </p>
+  <img src="https://img.shields.io/circleci/project/github/zioroboco/moai-merge/master.svg">
 </div>
