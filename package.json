@@ -16,7 +16,7 @@
   "dependencies": {
     "@types/nock": "^11.1.0",
     "nock": "^11.4.0",
-    "probot": "^7.5.0"
+    "probot": "^9.5.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",

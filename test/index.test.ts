@@ -1,6 +1,6 @@
 import nock from "nock"
-import moaiMerge from "../src"
 import { Probot } from "probot"
+import moaiMerge from "../src"
 import payload from "./fixtures/issues.opened.json"
 
 const issueCreatedBody = { body: ":moyai:" }
@@ -15,7 +15,9 @@ describe("moai-merge", () => {
     const app = probot.load(moaiMerge)
 
     // just return a test token
-    app.app = () => "test"
+    app.app = {
+      getSignedJsonWebToken: () => Promise.resolve("test"),
+    }
   })
 
   test("creates a comment when an issue is opened", async done => {
