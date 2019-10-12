@@ -8,8 +8,8 @@
   "homepage": "https://github.com/zioroboco/moai-merge",
   "bugs": "https://github.com/zioroboco/moai-merge/issues",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "start": "probot run ./lib/index.js",
+    "build": "tsc -p tsconfig.lib.json",
+    "start": "yarn build && probot run lib",
     "test": "jest"
   },
   "dependencies": {

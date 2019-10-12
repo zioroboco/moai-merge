@@ -1,25 +1,14 @@
 {
   "compilerOptions": {
-    "allowJs": false,
     "lib": ["es2015", "es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5",
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": false,
-    "pretty": true,
-    "strict": true,
-    "sourceMap": true,
-    "outDir": "./lib",
-    "skipLibCheck": true,
-    "noImplicitAny": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "declaration": true,
-    "resolveJsonModule": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "compileOnSave": false
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "noEmit": true
+  }
 }

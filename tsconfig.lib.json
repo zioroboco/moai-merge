@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "./lib"
+  },
+  "include": ["src/**/*"]
+}
