@@ -1,0 +1,13 @@
+*
+
+# Whitelist...
+!**/
+!*.ts
+!*.js
+!*.json
+!*.yaml
+!*.yml
+
+# Explicitly ignore...
+/node_modules/
+/lib/
