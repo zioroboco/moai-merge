@@ -1,6 +1,6 @@
 import { Application } from "probot"
 
-export = (app: Application) => {
+export default (app: Application) => {
   app.on("issues.opened", async context => {
     const issueComment = context.issue({
       body: ":moyai:",

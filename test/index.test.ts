@@ -1,6 +1,6 @@
 import nock from "nock"
 import { Probot } from "probot"
-import moaiMerge from "../src"
+import moaiMerge from "../src/app"
 import payload from "./fixtures/issues.opened.json"
 
 const issueCreatedBody = { body: ":moyai:" }

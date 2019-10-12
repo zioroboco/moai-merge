@@ -1,8 +1,9 @@
 {
   "version": 2,
-  "builds": [{ "src": "now.js", "use": "@now/node" }],
-  "routes": [{ "src": "/", "dest": "now.js" }],
+  "builds": [{ "src": "src/handler.ts", "use": "@now/node" }],
+  "routes": [{ "src": "/", "dest": "src/handler.ts" }],
   "env": {
+    "NODE_ENV": "production",
     "APP_ID": "@moai-app-id",
     "WEBHOOK_SECRET": "@moai-webhook-secret",
     "PRIVATE_KEY": "@moai-private-key"

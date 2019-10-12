@@ -7,7 +7,6 @@
   "repository": "https://github.com/zioroboco/moai-merge.git",
   "homepage": "https://github.com/zioroboco/moai-merge",
   "bugs": "https://github.com/zioroboco/moai-merge/issues",
-  "main": "lib",
   "scripts": {
     "build": "tsc -p tsconfig.lib.json",
     "start": "yarn build && probot run lib",
@@ -15,9 +14,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "@now/node": "^1.0.1",
     "@types/nock": "^11.1.0",
     "nock": "^11.4.0",
-    "probot": "^9.5.2"
+    "probot": "^9.2.13",
+    "probot-serverless-now": "^2.1.1"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
@@ -25,7 +26,6 @@
     "jest": "^24.9.0",
     "jest-circus": "^24.9.0",
     "prettier": "^1.18.2",
-    "probot-serverless-now": "^2.1.1",
     "smee-client": "^1.1.0",
     "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
