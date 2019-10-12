@@ -32,6 +32,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.6.4"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "engines": {
     "node": ">= 8.3.0"
   }
