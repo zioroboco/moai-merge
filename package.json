@@ -15,11 +15,14 @@
   },
   "dependencies": {
     "@now/node": "^1.0.1",
+    "@octokit/rest": "^16.33.1",
+    "@octokit/webhooks": "^6.3.2",
     "@types/nock": "^11.1.0",
     "conventional-commits-parser": "^3.0.5",
     "nock": "^11.4.0",
     "probot": "^9.2.13",
-    "probot-serverless-now": "^2.1.1"
+    "probot-serverless-now": "^2.1.1",
+    "ts-essentials": "^3.0.2"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",

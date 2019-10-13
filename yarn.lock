@@ -358,7 +358,7 @@
     once "^1.4.0"
     universal-user-agent "^4.0.0"
 
-"@octokit/rest@^16.29.0":
+"@octokit/rest@^16.29.0", "@octokit/rest@^16.33.1":
   version "16.33.1"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-16.33.1.tgz#19229f5fd28d8e071644d37c249775ee40add433"
   integrity sha512-lOQ+fJZwkeJ/1PRTdnY1uNja01aKOMioRhQfZtei64gZMXIX3EAfF4koMQMvoLFwsnVBu3ifj1JW1WAAKdXcnA==
@@ -376,7 +376,7 @@
     once "^1.4.0"
     universal-user-agent "^4.0.0"
 
-"@octokit/webhooks@^6.0.0":
+"@octokit/webhooks@^6.0.0", "@octokit/webhooks@^6.3.2":
   version "6.3.2"
   resolved "https://registry.yarnpkg.com/@octokit/webhooks/-/webhooks-6.3.2.tgz#72e940a0a1d19bd5afc2002d2a656dc1233c69df"
   integrity sha512-qirhkNoOWwQF0IHZ+9nobfcM/LMRhsJ2FUrexzzJZIDTXLAGZLVpUnXUZ86hSlYfCluyTccIFOz+SFFzodft0g==
@@ -4685,6 +4685,11 @@ trim-off-newlines@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-off-newlines/-/trim-off-newlines-1.0.1.tgz#9f9ba9d9efa8764c387698bcbfeb2c848f11adb3"
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
+
+ts-essentials@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-3.0.2.tgz#143a60857a97c0e431b12bddbc4f3a7d7f3c40d4"
+  integrity sha512-vOdAnCS2tt+4fML/Xnf5iWvr+3bAhG0odly05UprbuwgI5hfRhUZ9a+K3hdYSSM0TPRn8/VS3F4Pza1uNqsTKw==
 
 ts-jest@^24.1.0:
   version "24.1.0"
