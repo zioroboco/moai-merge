@@ -2,6 +2,8 @@ import { WebhookPayloadPullRequest } from "@octokit/webhooks"
 import { Application, Context } from "probot"
 import { checkStatus, PR } from "./status"
 
+export const APP_NAME = "Moai"
+
 export type PullRequestContext = Context<WebhookPayloadPullRequest>
 
 const analysePR = async (context: PullRequestContext): Promise<PR> => {
@@ -20,7 +22,7 @@ export const updateStatus = async (context: PullRequestContext) => {
   await context.github.repos.createStatus(
     context.repo({
       sha: context.payload.pull_request.head.sha,
-      context: "moai-merge",
+      context: APP_NAME,
       ...status,
     })
   )

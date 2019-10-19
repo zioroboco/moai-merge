@@ -1,8 +1,8 @@
 import Octokit from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
-import { PullRequestContext, updateStatus } from "../src/app"
-import { pending, success } from "../src/status"
+import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
+import { Description, pending, success } from "../src/status"
 
 nock.disableNetConnect()
 
@@ -28,7 +28,7 @@ const makeScope = (commits: string[], expected: any) =>
     .get("/repos/zioroboco/moai-merge/pulls/1/commits")
     .reply(200, commits.map(message => ({ commit: { message } })))
     .post(`/repos/zioroboco/moai-merge/statuses/${HEAD_SHA}`, {
-      context: "moai-merge",
+      context: APP_NAME,
       ...expected,
     })
     .reply(200)
@@ -51,7 +51,7 @@ describe("multiple non-conventional commits", () => {
     const title = "title"
 
     it("resolves pending", async () => {
-      const expected = pending()
+      const expected = pending(Description.MultipleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -73,7 +73,7 @@ describe("a single non-conventional commit", () => {
     const title = "title"
 
     it("resolves pending", async () => {
-      const expected = pending()
+      const expected = pending(Description.SingleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -82,7 +82,7 @@ describe("a single non-conventional commit", () => {
     const title = "feat: title"
 
     it("resolves pending", async () => {
-      const expected = pending()
+      const expected = pending(Description.SingleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -95,7 +95,7 @@ describe("a single conventional commit", () => {
     const title = "title"
 
     it("resolves pending", async () => {
-      const expected = pending()
+      const expected = pending(Description.Mismatched)
       await test({ title, commits, expected })
     })
   })
@@ -104,7 +104,7 @@ describe("a single conventional commit", () => {
     const title = "feat: title"
 
     it("resolves pending", async () => {
-      const expected = pending()
+      const expected = pending(Description.Mismatched)
       await test({ title, commits, expected })
     })
   })

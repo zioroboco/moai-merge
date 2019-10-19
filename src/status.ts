@@ -6,32 +6,40 @@ export type PR = { title: string } & (
 
 export type Status = {
   state: "success" | "pending"
-  description: string
+  description: Description
 }
 
 export const success = (
-  description = "Merge commit will inherit the conventional PR title."
+  description: Description = Description.GenericSuccess
 ): Status => ({
   state: "success",
-  description: description,
+  description,
 })
 
 export const pending = (
-  description = "Merge commit will not inherit a conventional PR title."
+  description: Description = Description.GenericPending
 ): Status => ({
   state: "pending",
   description,
 })
 
+export enum Description {
+  GenericSuccess = "Merge commit will inherit its conventional PR title.",
+  GenericPending = "Merge commit will not inherit its conventional PR title.",
+  SingleNonConventional = "Push a conventional commit message or more commits.",
+  MultipleNonConventional = "Requires a conventional PR title.",
+  Mismatched = "PR title does not match its conventional commit message.",
+}
+
 export const checkStatus = (pr: PR): Status => {
   if (pr.singleCommit) {
     const { conventional } = parse(pr.commitMessage)
-    if (!conventional) return pending()
-    if (pr.commitMessage !== pr.title) return pending()
+    if (!conventional) return pending(Description.SingleNonConventional)
+    if (pr.commitMessage !== pr.title) return pending(Description.Mismatched)
     return success()
   } else {
     const { conventional } = parse(pr.title)
-    if (!conventional) return pending()
+    if (!conventional) return pending(Description.MultipleNonConventional)
     return success()
   }
 }
