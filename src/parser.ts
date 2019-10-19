@@ -1,6 +1,6 @@
 const convetionalCommitsParser = require("conventional-commits-parser")
 
-export type ParsedCommit =
+export type MessageProperties =
   | { conventional: false }
   | {
       conventional: true
@@ -9,13 +9,14 @@ export type ParsedCommit =
       scope?: string
     }
 
-export const parse = (commit: string): ParsedCommit => {
-  const { type, subject, scope } = convetionalCommitsParser.sync(commit)
-  if (!subject || !type) return { conventional: false }
-  return {
-    conventional: true,
-    type,
-    subject,
-    scope,
-  }
+export const parse = (message: string): MessageProperties => {
+  const { type, subject, scope } = convetionalCommitsParser.sync(message)
+  return !subject || !type
+    ? { conventional: false }
+    : {
+        conventional: true,
+        type,
+        subject,
+        scope,
+      }
 }

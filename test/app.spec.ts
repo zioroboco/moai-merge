@@ -2,6 +2,7 @@ import Octokit from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
 import { PullRequestContext, updateStatus } from "../src/app"
+import { pending, success } from "../src/status"
 
 nock.disableNetConnect()
 
@@ -22,75 +23,98 @@ const makeContext = (title: string): PullRequestContext => ({
   },
 })
 
-const makeScope = (commits: string[], expected: "success" | "pending") =>
+const makeScope = (commits: string[], expected: any) =>
   nock("https://api.github.com")
     .get("/repos/zioroboco/moai-merge/pulls/1/commits")
     .reply(200, commits.map(message => ({ commit: { message } })))
     .post(`/repos/zioroboco/moai-merge/statuses/${HEAD_SHA}`, {
-      state: expected,
       context: "moai-merge",
+      ...expected,
     })
     .reply(200)
 
-const setup = (params: {
+const test = async (params: {
   title: string
   commits: string[]
-  expected: "success" | "pending"
-}) => ({
-  context: makeContext(params.title),
-  scope: makeScope(params.commits, params.expected),
-})
+  expected: any
+}) => {
+  const context = makeContext(params.title)
+  const scope = makeScope(params.commits, params.expected)
+  await updateStatus(context)
+  expect(scope.isDone()).toBe(true)
+}
 
-describe("a single commit", () => {
-  const title = "title"
-  const commits = ["feat: one"]
+describe("multiple non-conventional commits", () => {
+  const commits = ["commit-one", "commit-two"]
 
-  describe("when conventional", () => {
-    it("resolves to success", async () => {
-      const expected = "success"
+  describe("with a non-conventional PR title", () => {
+    const title = "title"
 
-      const { context, scope } = setup({ title, commits, expected })
-      await updateStatus(context)
-      expect(scope.isDone()).toBe(true)
+    it("resolves pending", async () => {
+      const expected = pending()
+      await test({ title, commits, expected })
     })
   })
-
-  describe("when non-conventional", () => {
-    it("resolves to pending", async () => {
-      const commits = ["one"]
-      const expected = "pending"
-
-      const { context, scope } = setup({ title, commits, expected })
-      await updateStatus(context)
-      expect(scope.isDone()).toBe(true)
-    })
-  })
-})
-
-describe("multiple commits", () => {
-  const commits = ["one", "two"]
 
   describe("with a conventional PR title", () => {
     const title = "feat: title"
 
-    it("resolves to success", async () => {
-      const expected = "success"
+    it("resolves success", async () => {
+      const expected = success()
+      await test({ title, commits, expected })
+    })
+  })
+})
 
-      const { context, scope } = setup({ title, commits, expected })
-      await updateStatus(context)
-      expect(scope.isDone()).toBe(true)
+describe("a single non-conventional commit", () => {
+  const commits = ["commit"]
+
+  describe("with a non-conventional PR title", () => {
+    const title = "title"
+
+    it("resolves pending", async () => {
+      const expected = pending()
+      await test({ title, commits, expected })
     })
   })
 
-  describe("without a conventional PR title", () => {
+  describe("with a conventional PR title", () => {
+    const title = "feat: title"
+
+    it("resolves pending", async () => {
+      const expected = pending()
+      await test({ title, commits, expected })
+    })
+  })
+})
+
+describe("a single conventional commit", () => {
+  const commits = ["feat: commit"]
+
+  describe("with a non-conventional PR title", () => {
     const title = "title"
 
-    it("resolves to pending", async () => {
-      const expected = "pending"
+    it("resolves pending", async () => {
+      const expected = pending()
+      await test({ title, commits, expected })
+    })
+  })
 
-      const { context, scope } = setup({ title, commits, expected })
-      await updateStatus(context)
-      expect(scope.isDone()).toBe(true)
+  describe("with a non-matching conventional PR title", () => {
+    const title = "feat: title"
+
+    it("resolves pending", async () => {
+      const expected = pending()
+      await test({ title, commits, expected })
+    })
+  })
+
+  describe("with a matching conventional PR title", () => {
+    const title = "feat: commit"
+
+    it("resolves success", async () => {
+      const expected = success()
+      await test({ title, commits, expected })
     })
   })
 })
