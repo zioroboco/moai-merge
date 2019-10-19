@@ -1,5 +1,17 @@
 const convetionalCommitsParser = require("conventional-commits-parser")
 
+const angularPresetTypes = [
+  "build",
+  "ci",
+  "docs",
+  "feat",
+  "fix",
+  "perf",
+  "refactor",
+  "style",
+  "test",
+]
+
 export type MessageProperties =
   | { conventional: false }
   | {
@@ -11,7 +23,7 @@ export type MessageProperties =
 
 export const parse = (message: string): MessageProperties => {
   const { type, subject, scope } = convetionalCommitsParser.sync(message)
-  return !subject || !type
+  return !subject || !type || !angularPresetTypes.includes(type)
     ? { conventional: false }
     : {
         conventional: true,

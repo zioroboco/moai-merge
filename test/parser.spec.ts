@@ -42,6 +42,8 @@ describe("parsing conventional commits", () => {
       `${type}(${scope}):`,
       `${type}(${scope}): `,
       `${type}:${subject}`,
+      `nonsense: ${subject}`,
+      `FEAT: ${subject}`,
     ]
 
     invalidCommits.forEach(commit => {
