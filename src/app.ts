@@ -2,7 +2,7 @@ import { WebhookPayloadPullRequest } from "@octokit/webhooks"
 import { Application, Context, Octokit } from "probot"
 import { checkStatus, PR } from "./status"
 
-export const APP_NAME = "Moai"
+export const APP_NAME = "Moai (dev)"
 
 export type PullRequestContext = Context<WebhookPayloadPullRequest>
 export type CommitsResponse = Octokit.PullsListCommitsResponseItem[]
