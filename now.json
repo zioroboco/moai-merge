@@ -4,8 +4,8 @@
   "routes": [{ "src": "/", "dest": "src/handler.ts" }],
   "env": {
     "NODE_ENV": "production",
-    "APP_ID": "@moai-app-id",
+    "APP_ID": "@moai-dev-app-id",
     "WEBHOOK_SECRET": "@moai-webhook-secret",
-    "PRIVATE_KEY": "@moai-private-key"
+    "PRIVATE_KEY": "@moai-dev-private-key"
   }
 }
