@@ -2,7 +2,7 @@ import Octokit from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
 import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
-import { Description, pending, success } from "../src/status"
+import { Description, pending, Status, success } from "../src/status"
 
 nock.disableNetConnect()
 
@@ -16,14 +16,12 @@ const makeContext = (title: string): PullRequestContext => ({
       number: 1,
       title,
       // @ts-ignore
-      head: {
-        sha: HEAD_SHA,
-      },
+      head: { sha: HEAD_SHA },
     },
   },
 })
 
-const makeScope = (commits: string[], expected: any) =>
+const makeScope = (commits: string[], expected: Status) =>
   nock("https://api.github.com")
     .get("/repos/zioroboco/moai-merge/pulls/1/commits")
     .reply(200, commits.map(message => ({ commit: { message } })))
@@ -36,7 +34,7 @@ const makeScope = (commits: string[], expected: any) =>
 const test = async (params: {
   title: string
   commits: string[]
-  expected: any
+  expected: Status
 }) => {
   const context = makeContext(params.title)
   const scope = makeScope(params.commits, params.expected)

@@ -7,10 +7,10 @@ export const APP_NAME = "Moai"
 export type PullRequestContext = Context<WebhookPayloadPullRequest>
 
 const analysePR = async (context: PullRequestContext): Promise<PR> => {
+  const { title } = context.payload.pull_request
   const { data } = await context.github.pulls.listCommits(
     context.repo({ pull_number: context.payload.pull_request.number })
   )
-  const { title } = context.payload.pull_request
   return data.length > 1
     ? { title, singleCommit: false }
     : { title, singleCommit: true, commitMessage: data[0].commit.message }
@@ -21,8 +21,8 @@ export const updateStatus = async (context: PullRequestContext) => {
   const status = checkStatus(pr)
   await context.github.repos.createStatus(
     context.repo({
-      sha: context.payload.pull_request.head.sha,
       context: APP_NAME,
+      sha: context.payload.pull_request.head.sha,
       ...status,
     })
   )
