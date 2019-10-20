@@ -1,7 +1,9 @@
 const convetionalCommitsParser = require("conventional-commits-parser")
 
+/** See: https://www.conventionalcommits.org/en/v1.0.0/ */
 const angularPresetTypes = [
   "build",
+  "chore",
   "ci",
   "docs",
   "feat",
