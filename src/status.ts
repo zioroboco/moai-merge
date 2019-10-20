@@ -26,9 +26,9 @@ export const pending = (
 export enum Description {
   GenericSuccess = "Merge commit will inherit its conventional PR title.",
   GenericPending = "Merge commit will not inherit its conventional PR title.",
-  SingleNonConventional = "Push a conventional commit message or more commits.",
   MultipleNonConventional = "Requires a conventional PR title.",
-  Mismatched = "PR title does not match its conventional commit message.",
+  SingleNonConventional = "Requires a conventional commit message.",
+  Mismatched = "Requires commit message to match PR title.",
 }
 
 export const checkStatus = (pr: PR): Status => {
