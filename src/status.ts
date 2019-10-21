@@ -32,14 +32,20 @@ export enum Description {
 }
 
 export const checkStatus = (pr: PR): Status => {
+  const parsedTitle = parse(pr.title)
   if (pr.singleCommit) {
-    const { conventional } = parse(pr.commitMessage)
-    if (!conventional) return pending(Description.SingleNonConventional)
-    if (pr.commitMessage !== pr.title) return pending(Description.Mismatched)
+    const parsedCommitMessage = parse(pr.commitMessage)
+    if (!parsedCommitMessage.conventional) {
+      return pending(Description.SingleNonConventional)
+    }
+    if (parsedCommitMessage.header !== pr.title) {
+      return pending(Description.Mismatched)
+    }
     return success()
   } else {
-    const { conventional } = parse(pr.title)
-    if (!conventional) return pending(Description.MultipleNonConventional)
+    if (!parsedTitle.conventional) {
+      return pending(Description.MultipleNonConventional)
+    }
     return success()
   }
 }
