@@ -118,3 +118,16 @@ describe("a single conventional commit", () => {
     })
   })
 })
+
+describe("a single non-conventional commit with GitHub update commits", () => {
+  const commits = ["commit", "Merge branch 'master' into some-branch"]
+
+  describe("with a conventional PR title", () => {
+    const title = "feat: commit"
+
+    it("resolves pending", async () => {
+      const expected = pending(Description.SingleNonConventional) //?
+      await test({ title, commits, expected })
+    })
+  })
+})
