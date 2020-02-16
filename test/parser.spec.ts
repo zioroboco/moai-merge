@@ -33,24 +33,24 @@ describe("parsing conventional commits", () => {
       expect(parsed.scope).toBeNull()
     })
   })
+})
 
-  describe("parsing invalid commits", () => {
-    const invalidCommits = [
-      `${subject}`,
-      `${type}:`,
-      `${type}: `,
-      `${type}(${scope}):`,
-      `${type}(${scope}): `,
-      `${type}:${subject}`,
-      `nonsense: ${subject}`,
-      `FEAT: ${subject}`,
-    ]
+describe("parsing invalid commits", () => {
+  const invalidCommits = [
+    `${subject}`,
+    `${type}:`,
+    `${type}: `,
+    `${type}(${scope}):`,
+    `${type}(${scope}): `,
+    `${type}:${subject}`,
+    `nonsense: ${subject}`,
+    `FEAT: ${subject}`,
+  ]
 
-    invalidCommits.forEach(commit => {
-      it("returns non-conventional", () => {
-        const parsed = parse(commit)
-        expect(parsed.conventional).toBe(false)
-      })
+  invalidCommits.forEach(commit => {
+    it("returns non-conventional", () => {
+      const parsed = parse(commit)
+      expect(parsed.conventional).toBe(false)
     })
   })
 })
