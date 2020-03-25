@@ -28,7 +28,7 @@ export enum Description {
   GenericFailure = "Merge commit will not inherit its conventional PR title.",
   MultipleNonConventional = "Requires a conventional PR title.",
   SingleNonConventional = "Requires a conventional commit message.",
-  Mismatched = "Requires commit message to match PR title.",
+  Mismatched = "Requires single commit message to match PR title.",
 }
 
 export const checkStatus = (pr: PR): Status => {
