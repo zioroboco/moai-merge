@@ -2,7 +2,7 @@ import Octokit from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
 import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
-import { Description, pending, success } from "../src/status"
+import { Description, failure, success } from "../src/status"
 
 nock.disableNetConnect()
 
@@ -50,8 +50,8 @@ describe("multiple non-conventional commits", () => {
   describe("with a non-conventional PR title", () => {
     const title = "title"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.MultipleNonConventional)
+    it("resolves failure", async () => {
+      const expected = failure(Description.MultipleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -72,8 +72,8 @@ describe("a single non-conventional commit", () => {
   describe("with a non-conventional PR title", () => {
     const title = "title"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.SingleNonConventional)
+    it("resolves failure", async () => {
+      const expected = failure(Description.SingleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -81,8 +81,8 @@ describe("a single non-conventional commit", () => {
   describe("with a conventional PR title", () => {
     const title = "feat: title"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.SingleNonConventional)
+    it("resolves failure", async () => {
+      const expected = failure(Description.SingleNonConventional)
       await test({ title, commits, expected })
     })
   })
@@ -94,8 +94,8 @@ describe("a single conventional commit", () => {
   describe("with a non-conventional PR title", () => {
     const title = "title"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.Mismatched)
+    it("resolves failure", async () => {
+      const expected = failure(Description.Mismatched)
       await test({ title, commits, expected })
     })
   })
@@ -103,8 +103,8 @@ describe("a single conventional commit", () => {
   describe("with a non-matching conventional PR title", () => {
     const title = "feat: title"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.Mismatched)
+    it("resolves failure", async () => {
+      const expected = failure(Description.Mismatched)
       await test({ title, commits, expected })
     })
   })
@@ -112,7 +112,7 @@ describe("a single conventional commit", () => {
   describe("with a matching conventional PR title", () => {
     const title = "feat: commit"
 
-    it("resolves success", async () => {
+    it("resolves failure", async () => {
       const expected = success()
       await test({ title, commits, expected })
     })
@@ -125,8 +125,8 @@ describe("a single non-conventional commit with GitHub update commits", () => {
   describe("with a conventional PR title", () => {
     const title = "feat: commit"
 
-    it("resolves pending", async () => {
-      const expected = pending(Description.SingleNonConventional) //?
+    it("resolves failure", async () => {
+      const expected = failure(Description.SingleNonConventional)
       await test({ title, commits, expected })
     })
   })
