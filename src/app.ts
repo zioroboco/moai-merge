@@ -10,9 +10,9 @@ export type CommitsResponse = Octokit.PullsListCommitsResponseItem[]
 const singleCommitBranch = (commitsResponse: CommitsResponse): boolean => {
   if (commitsResponse.length <= 1) return true
   const masterMergeCommitPrefix = `Merge branch \'master\' into`
-  const mergeCommitsFromMaster = commitsResponse
-    .map(({ commit }) => commit.message.startsWith(masterMergeCommitPrefix))
-    .filter(a => a === true)
+  const mergeCommitsFromMaster = commitsResponse.filter(({ commit }) =>
+    commit.message.startsWith(masterMergeCommitPrefix)
+  )
   return mergeCommitsFromMaster.length === commitsResponse.length - 1
 }
 
