@@ -27,7 +27,7 @@ export enum Description {
   GenericSuccess = "Merge commit will inherit its conventional PR title.",
   GenericFailure = "Merge commit will not inherit its conventional PR title.",
   MultipleNonConventional = "Requires a conventional PR title.",
-  SingleNonConventional = "Requires a conventional commit message.",
+  SingleNonConventional = "Single commit requires a conventional commit message.",
   Mismatched = "Requires single commit message to match PR title.",
 }
 
