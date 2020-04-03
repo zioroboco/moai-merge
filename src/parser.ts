@@ -14,6 +14,10 @@ const angularPresetTypes = [
   "test",
 ]
 
+const customTypes = ["ops"]
+
+const types = [...angularPresetTypes, ...customTypes]
+
 export type MessageProperties =
   | { conventional: false }
   | {
@@ -26,7 +30,7 @@ export type MessageProperties =
 
 export const parse = (message: string): MessageProperties => {
   const { header, type, subject, scope } = convetionalCommitsParser(message)
-  return !subject || !type || !angularPresetTypes.includes(type)
+  return !subject || !type || !types.includes(type)
     ? { conventional: false }
     : {
         conventional: true,
