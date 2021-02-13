@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@now/node": "^1.0.1",
+    "@octokit/core": "^3.2.5",
     "@octokit/rest": "^16.33.1",
     "@octokit/webhooks": "^6.3.2",
     "@types/nock": "^11.1.0",
