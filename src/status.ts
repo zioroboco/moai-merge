@@ -1,6 +1,6 @@
 import { parse } from "./parser"
 
-export type PR = { title: string } & (
+export type PR = { author: string; title: string } & (
   | { singleCommit: false }
   | { singleCommit: true; commitMessage: string })
 
@@ -32,6 +32,7 @@ export enum Description {
 }
 
 export const checkStatus = (pr: PR): Status => {
+  if (pr.author.startsWith("dependabot")) return success()
   const parsedTitle = parse(pr.title)
   if (pr.singleCommit) {
     const parsedCommitMessage = parse(pr.commitMessage)

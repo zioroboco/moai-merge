@@ -20,10 +20,14 @@ const analysePR = async (context: PullRequestContext): Promise<PR> => {
   const { data } = await context.github.pulls.listCommits(
     context.repo({ pull_number: context.payload.pull_request.number })
   )
-  const { title } = context.payload.pull_request
-  return singleCommitBranch(data)
-    ? { title, singleCommit: true, commitMessage: data[0].commit.message }
-    : { title, singleCommit: false }
+  const { title, user } = context.payload.pull_request
+  return {
+    title,
+    author: user.login,
+    ...(singleCommitBranch(data)
+      ? { singleCommit: true, commitMessage: data[0].commit.message }
+      : { singleCommit: false }),
+  }
 }
 
 export const updateStatus = async (context: PullRequestContext) => {
