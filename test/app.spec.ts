@@ -1,4 +1,4 @@
-import Octokit from "@octokit/rest"
+import { Octokit } from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
 import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
