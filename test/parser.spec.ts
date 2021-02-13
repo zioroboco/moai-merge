@@ -47,7 +47,7 @@ describe("parsing invalid commits", () => {
     `FEAT: ${subject}`,
   ]
 
-  invalidCommits.forEach(commit => {
+  invalidCommits.forEach((commit) => {
     it("returns non-conventional", () => {
       const parsed = parse(commit)
       expect(parsed.conventional).toBe(false)

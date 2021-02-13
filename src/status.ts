@@ -2,7 +2,8 @@ import { parse } from "./parser"
 
 export type PR = { title: string } & (
   | { singleCommit: false }
-  | { singleCommit: true; commitMessage: string })
+  | { singleCommit: true; commitMessage: string }
+)
 
 export type Status = {
   state: "success" | "failure"

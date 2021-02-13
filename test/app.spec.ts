@@ -9,7 +9,7 @@ nock.disableNetConnect()
 const HEAD_SHA = "c0ffee"
 
 const makeContext = (title: string): PullRequestContext => ({
-  repo: params => ({ owner: "zioroboco", repo: "moai-merge", ...params }),
+  repo: (params) => ({ owner: "zioroboco", repo: "moai-merge", ...params }),
   github: new Octokit() as GitHubAPI,
   payload: {
     pull_request: {
@@ -26,7 +26,10 @@ const makeContext = (title: string): PullRequestContext => ({
 const makeScope = (commits: string[], expected: any) =>
   nock("https://api.github.com")
     .get("/repos/zioroboco/moai-merge/pulls/1/commits")
-    .reply(200, commits.map(message => ({ commit: { message } })))
+    .reply(
+      200,
+      commits.map((message) => ({ commit: { message } }))
+    )
     .post(`/repos/zioroboco/moai-merge/statuses/${HEAD_SHA}`, {
       context: APP_NAME,
       ...expected,
