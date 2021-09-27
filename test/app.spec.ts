@@ -8,7 +8,10 @@ nock.disableNetConnect()
 
 const HEAD_SHA = "c0ffee"
 
-const makeContext = (title: string): PullRequestContext => ({
+const makeContext = (
+  title: string,
+  labels: string[] = []
+): PullRequestContext => ({
   repo: (params) => ({ owner: "zioroboco", repo: "moai-merge", ...params }),
   github: new Octokit() as GitHubAPI,
   payload: {
@@ -19,6 +22,7 @@ const makeContext = (title: string): PullRequestContext => ({
       head: {
         sha: HEAD_SHA,
       },
+      labels,
     },
   },
 })
@@ -40,8 +44,9 @@ const test = async (params: {
   title: string
   commits: string[]
   expected: any
+  labels?: string[]
 }) => {
-  const context = makeContext(params.title)
+  const context = makeContext(params.title, params.labels)
   const scope = makeScope(params.commits, params.expected)
   await updateStatus(context)
   expect(scope.isDone()).toBe(true)
@@ -131,6 +136,29 @@ describe("a single non-conventional commit with GitHub update commits", () => {
     it("resolves failure", async () => {
       const expected = failure(Description.SingleNonConventional)
       await test({ title, commits, expected })
+    })
+  })
+})
+
+describe("Renovate PRs", () => {
+  const prTitle = "chore(deps): badbadnotgood"
+  const commitMessages = ["chore(deps): goodgoodnotbad"]
+
+  it("PRs without the 'renovate' label can't have mismatching titles and single commit messages", async () => {
+    const expected = failure(Description.SingleNonConventional)
+    await test({
+      title: prTitle,
+      commits: commitMessages,
+      expected,
+    })
+  })
+  it("PRs with the 'renovate' label can have mismatching titles and single commit messages", async () => {
+    const expected = success()
+    await test({
+      title: prTitle,
+      commits: commitMessages,
+      expected,
+      labels: ["renovate"],
     })
   })
 })

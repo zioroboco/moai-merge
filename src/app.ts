@@ -7,7 +7,16 @@ export const APP_NAME = "Moai"
 export type PullRequestContext = Context<WebhookPayloadPullRequest>
 export type CommitsResponse = Octokit.PullsListCommitsResponseItem[]
 
-const singleCommitBranch = (commitsResponse: CommitsResponse): boolean => {
+type PullRequest = WebhookPayloadPullRequest["pull_request"]
+const renovateLabel = "renovate"
+
+const singleCommitBranch = (
+  commitsResponse: CommitsResponse,
+  pr: PullRequest
+): boolean => {
+  if (pr.labels.includes(renovateLabel)) {
+    return false
+  }
   if (commitsResponse.length <= 1) return true
   const masterMergeCommitPrefix = `Merge branch \'master\' into`
   const mergeCommitsFromMaster = commitsResponse.filter(({ commit }) =>
@@ -21,7 +30,7 @@ const analysePR = async (context: PullRequestContext): Promise<PR> => {
     context.repo({ pull_number: context.payload.pull_request.number })
   )
   const { title } = context.payload.pull_request
-  return singleCommitBranch(data)
+  return singleCommitBranch(data, context.payload.pull_request)
     ? { title, singleCommit: true, commitMessage: data[0].commit.message }
     : { title, singleCommit: false }
 }
