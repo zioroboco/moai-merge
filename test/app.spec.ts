@@ -1,7 +1,12 @@
 import { Octokit } from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
-import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
+import {
+  APP_NAME,
+  dependencyPRLabel,
+  PullRequestContext,
+  updateStatus,
+} from "../src/app"
 import { Description, failure, success } from "../src/status"
 
 nock.disableNetConnect()
@@ -140,11 +145,11 @@ describe("a single non-conventional commit with GitHub update commits", () => {
   })
 })
 
-describe("Renovate PRs", () => {
+describe("Dependency PRs", () => {
   const prTitle = "chore(deps): badbadnotgood"
   const commitMessages = ["chore(deps): goodgoodnotbad"]
 
-  it("PRs without the 'renovate' label can't have mismatching titles and single commit messages", async () => {
+  it(`PRs WITHOUT the '${dependencyPRLabel}' label can't have mismatching titles and single commit messages`, async () => {
     const expected = failure(Description.SingleNonConventional)
     await test({
       title: prTitle,
@@ -152,13 +157,13 @@ describe("Renovate PRs", () => {
       expected,
     })
   })
-  it("PRs with the 'renovate' label can have mismatching titles and single commit messages", async () => {
+  it(`PRs WITH the '${dependencyPRLabel}' label can have mismatching titles and single commit messages`, async () => {
     const expected = success()
     await test({
       title: prTitle,
       commits: commitMessages,
       expected,
-      labels: ["renovate"],
+      labels: [dependencyPRLabel],
     })
   })
 })

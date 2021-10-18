@@ -8,13 +8,13 @@ export type PullRequestContext = Context<WebhookPayloadPullRequest>
 export type CommitsResponse = Octokit.PullsListCommitsResponseItem[]
 
 type PullRequest = WebhookPayloadPullRequest["pull_request"]
-const renovateLabel = "renovate"
+export const dependencyPRLabel = "dependencies"
 
 const singleCommitBranch = (
   commitsResponse: CommitsResponse,
   pr: PullRequest
 ): boolean => {
-  if (pr.labels.includes(renovateLabel)) {
+  if (pr.labels.includes(dependencyPRLabel)) {
     return false
   }
   if (commitsResponse.length <= 1) return true
