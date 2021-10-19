@@ -1,12 +1,7 @@
 import { Octokit } from "@octokit/rest"
 import nock from "nock"
 import { GitHubAPI } from "probot/lib/github"
-import {
-  APP_NAME,
-  dependencyPRLabel,
-  PullRequestContext,
-  updateStatus,
-} from "../src/app"
+import { APP_NAME, PullRequestContext, updateStatus } from "../src/app"
 import { Description, failure, success } from "../src/status"
 
 nock.disableNetConnect()
@@ -111,6 +106,15 @@ describe("a single conventional commit", () => {
       const expected = failure(Description.Mismatched)
       await test({ title, commits, expected })
     })
+
+    describe("labelled as an automated dependency update", () => {
+      const labels = ["dependencies"]
+
+      it("resolves successful", async () => {
+        const expected = success()
+        await test({ title, commits, labels, expected })
+      })
+    })
   })
 
   describe("with a non-matching conventional PR title", () => {
@@ -141,29 +145,6 @@ describe("a single non-conventional commit with GitHub update commits", () => {
     it("resolves failure", async () => {
       const expected = failure(Description.SingleNonConventional)
       await test({ title, commits, expected })
-    })
-  })
-})
-
-describe("Dependency PRs", () => {
-  const prTitle = "chore(deps): badbadnotgood"
-  const commitMessages = ["chore(deps): goodgoodnotbad"]
-
-  it(`PRs WITHOUT the '${dependencyPRLabel}' label can't have mismatching titles and single commit messages`, async () => {
-    const expected = failure(Description.SingleNonConventional)
-    await test({
-      title: prTitle,
-      commits: commitMessages,
-      expected,
-    })
-  })
-  it(`PRs WITH the '${dependencyPRLabel}' label can have mismatching titles and single commit messages`, async () => {
-    const expected = success()
-    await test({
-      title: prTitle,
-      commits: commitMessages,
-      expected,
-      labels: [dependencyPRLabel],
     })
   })
 })

@@ -8,15 +8,15 @@ export type PullRequestContext = Context<WebhookPayloadPullRequest>
 export type CommitsResponse = Octokit.PullsListCommitsResponseItem[]
 
 type PullRequest = WebhookPayloadPullRequest["pull_request"]
-export const dependencyPRLabel = "dependencies"
 
+/**
+ * Reflects GitHub's logic for deciding whether to prioritise a commit message
+ * over the PR title -- for example, in a squash-and-merge of a single commit.
+ */
 const singleCommitBranch = (
   commitsResponse: CommitsResponse,
   pr: PullRequest
 ): boolean => {
-  if (pr.labels.includes(dependencyPRLabel)) {
-    return false
-  }
   if (commitsResponse.length <= 1) return true
   const masterMergeCommitPrefix = `Merge branch \'master\' into`
   const mergeCommitsFromMaster = commitsResponse.filter(({ commit }) =>
@@ -29,10 +29,21 @@ const analysePR = async (context: PullRequestContext): Promise<PR> => {
   const { data } = await context.github.pulls.listCommits(
     context.repo({ pull_number: context.payload.pull_request.number })
   )
-  const { title } = context.payload.pull_request
+
+  const { title, labels } = context.payload.pull_request
+
   return singleCommitBranch(data, context.payload.pull_request)
-    ? { title, singleCommit: true, commitMessage: data[0].commit.message }
-    : { title, singleCommit: false }
+    ? {
+        singleCommit: true,
+        commitMessage: data[0].commit.message,
+        title,
+        labels,
+      }
+    : {
+        singleCommit: false,
+        title,
+        labels,
+      }
 }
 
 export const updateStatus = async (context: PullRequestContext) => {

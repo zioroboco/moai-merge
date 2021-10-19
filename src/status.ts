@@ -1,6 +1,6 @@
 import { parse } from "./parser"
 
-export type PR = { title: string } & (
+export type PR = { title: string; labels?: string[] } & (
   | { singleCommit: false }
   | { singleCommit: true; commitMessage: string }
 )
@@ -34,6 +34,12 @@ export enum Description {
 
 export const checkStatus = (pr: PR): Status => {
   const parsedTitle = parse(pr.title)
+
+  // Assume that all dependabot / renovate PRs are using conventional commit
+  if (pr.labels.includes("dependencies")) {
+    return success()
+  }
+
   if (pr.singleCommit) {
     const parsedCommitMessage = parse(pr.commitMessage)
     if (!parsedCommitMessage.conventional) {
