@@ -8,7 +8,10 @@ nock.disableNetConnect()
 
 const HEAD_SHA = "c0ffee"
 
-const makeContext = (title: string): PullRequestContext => ({
+const makeContext = (
+  title: string,
+  labels: string[] = []
+): PullRequestContext => ({
   repo: (params) => ({ owner: "zioroboco", repo: "moai-merge", ...params }),
   github: new Octokit() as GitHubAPI,
   payload: {
@@ -19,6 +22,7 @@ const makeContext = (title: string): PullRequestContext => ({
       head: {
         sha: HEAD_SHA,
       },
+      labels,
     },
   },
 })
@@ -40,8 +44,9 @@ const test = async (params: {
   title: string
   commits: string[]
   expected: any
+  labels?: string[]
 }) => {
-  const context = makeContext(params.title)
+  const context = makeContext(params.title, params.labels)
   const scope = makeScope(params.commits, params.expected)
   await updateStatus(context)
   expect(scope.isDone()).toBe(true)
@@ -100,6 +105,15 @@ describe("a single conventional commit", () => {
     it("resolves failure", async () => {
       const expected = failure(Description.Mismatched)
       await test({ title, commits, expected })
+    })
+
+    describe("labelled as an automated dependency update", () => {
+      const labels = ["dependencies"]
+
+      it("resolves successful", async () => {
+        const expected = success()
+        await test({ title, commits, labels, expected })
+      })
     })
   })
 
