@@ -1,9 +1,6 @@
 import { parse } from "./parser"
 
-export type PR = { title: string; labels?: string[] } & (
-  | { singleCommit: false }
-  | { singleCommit: true; commitMessage: string }
-)
+export type PR = { title: string; labels?: string[] }
 
 export type Status = {
   state: "success" | "failure"
@@ -27,7 +24,7 @@ export const failure = (
 export enum Description {
   GenericSuccess = "Merge commit will inherit its conventional PR title.",
   GenericFailure = "Merge commit will not inherit its conventional PR title.",
-  MultipleNonConventional = "Requires a conventional PR title.",
+  MultipleNonConventional = "PR title must be a conventional commit message.",
   SingleNonConventional = "Single commit requires a conventional commit message.",
   Mismatched = "Requires single commit message to match PR title.",
 }
@@ -40,19 +37,9 @@ export const checkStatus = (pr: PR): Status => {
     return success()
   }
 
-  if (pr.singleCommit) {
-    const parsedCommitMessage = parse(pr.commitMessage)
-    if (!parsedCommitMessage.conventional) {
-      return failure(Description.SingleNonConventional)
-    }
-    if (parsedCommitMessage.header !== pr.title) {
-      return failure(Description.Mismatched)
-    }
-    return success()
-  } else {
-    if (!parsedTitle.conventional) {
-      return failure(Description.MultipleNonConventional)
-    }
-    return success()
+  if (!parsedTitle.conventional) {
+    return failure(Description.MultipleNonConventional)
   }
+
+  return success()
 }
